@@ -12,12 +12,13 @@ ArgExp.MenuState = (function() {
     MenuState.prototype = {
 
         create: function () {
-            this.gameMessageText = this.add.text(this.game.world.centerX, 180, 'Click para empezar', { font: "40px Arial", fill: "#FFFFFF", align: "center" });
-            this.gameMessageText.anchor.setTo(0.5, 0);
-            this.gameMessageText = this.add.text(this.game.world.centerX, 300, 'Utilizar las flechas', { font: "40px Arial", fill: "#FFFFFF", align: "center" });
-            this.gameMessageText.anchor.setTo(0.5, 0);
-            this.gameMessageSecondLineText = this.add.text(this.game.world.centerX, 350, 'para mover al jugador', { font: "40px Arial", fill: "#FFFFFF", align: "center" });
-            this.gameMessageSecondLineText.anchor.setTo(0.5, 0);
+            var textPosition = {
+                x: (this.game.world.centerX),
+                y: (this.game.world.centerY)+400
+            };
+            this.preloadBackground = this.add.sprite(0, 0, 'preloadBackground');
+            this.gameText = this.add.text(textPosition.x, textPosition.y, 'Click para empezar', { font: "72px Arial", fill: "#000000", align: "center" });
+            this.gameText.anchor.setTo(0.5, 0.5);
             this.game.input.onDown.add(this.click, this);
         },
 

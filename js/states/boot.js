@@ -12,11 +12,11 @@ ArgExp.BootState = (function() {
 
     BootState.prototype = {
         preload: function () {
-            this.load.image('loadingBackground', 'assets/backgrounds/background.png');
-            this.load.image('progressBarBack', 'assets/backgrounds/progress-bar-back.png');
-            this.load.image('progressBarLeft', 'assets/backgrounds/progress-bar-left.png');
-            this.load.image('progressBarRight', 'assets/backgrounds/progress-bar-right.png');
-            this.load.image('progressBarMiddle', 'assets/backgrounds/progress-bar-middle.png');
+            this.load.image('preloadBackground', 'assets/backgrounds/preload.png');
+            this.load.image('progressBarBackground', 'assets/backgrounds/progress-bar.png');
+            this.load.image('progressBarLeft', 'assets/misc/progress-bar-left.png');
+            this.load.image('progressBarRight', 'assets/misc/progress-bar-right.png');
+            this.load.image('progressBarMiddle', 'assets/misc/progress-bar-middle.png');
         },
 
         create: function () {
