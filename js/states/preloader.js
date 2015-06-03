@@ -13,11 +13,17 @@ ArgExp.PreloaderState = (function() {
     PreloaderState.prototype = {
 
         preload: function () {
+            var progressBarPosition = {
+                x: (this.game.width/2)-(this.game.cache.getImage('progressBarBack').width/2),
+                y: (this.game.height/2)+350
+            };
             // Loaded in Boot state
-            this.background = this.add.sprite(0, 0, 'preloaderBackground');
-            this.preloadBar = this.add.sprite(0, 100, 'preloaderBar');
+            this.background = this.add.sprite(0, 0, 'loadingBackground');
+            this.preloadBarBack = this.add.sprite(progressBarPosition.x, progressBarPosition.y, 'progressBarBack');
+            this.progressBarLeft = this.add.sprite(progressBarPosition.x+12, progressBarPosition.y+12, 'progressBarLeft');
+            this.progressBarMiddle = this.add.sprite(progressBarPosition.x+52, progressBarPosition.y+12, 'progressBarMiddle');
             // Set the preloadBar sprite as a loader sprite.
-            this.load.setPreloadSprite(this.preloadBar);
+            this.load.setPreloadSprite(this.progressBarMiddle);
             // Load assets
             this.load.image('trees', 'assets/misc/trees-h.png');
             this.load.image('background', 'assets/misc/clouds-h.png');
@@ -36,7 +42,7 @@ ArgExp.PreloaderState = (function() {
 
         create: function () {
             // Disable the crop to wait in the update loop for the music decodes
-            this.preloadBar.cropEnabled = false;
+            this.progressBarMiddle.cropEnabled = false;
         },
 
         update: function () {
@@ -49,7 +55,7 @@ ArgExp.PreloaderState = (function() {
                 //     this.cache.isSoundDecoded('recover');
                 // if (allDecoded) {
                     this.ready = true;
-                    this.state.start('Menu');
+                    //this.state.start('Menu');
                 // }
             }
         }

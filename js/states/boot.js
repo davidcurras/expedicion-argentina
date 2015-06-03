@@ -12,8 +12,11 @@ ArgExp.BootState = (function() {
 
     BootState.prototype = {
         preload: function () {
-            this.load.image('preloaderBackground', 'assets/misc/preloader_background.jpg');
-            this.load.image('preloaderBar', 'assets/misc/preloader_bar.png');
+            this.load.image('loadingBackground', 'assets/backgrounds/background.png');
+            this.load.image('progressBarBack', 'assets/backgrounds/progress-bar-back.png');
+            this.load.image('progressBarLeft', 'assets/backgrounds/progress-bar-left.png');
+            this.load.image('progressBarRight', 'assets/backgrounds/progress-bar-right.png');
+            this.load.image('progressBarMiddle', 'assets/backgrounds/progress-bar-middle.png');
         },
 
         create: function () {
@@ -23,7 +26,7 @@ ArgExp.BootState = (function() {
             this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
-            this.scale.maxWidth = (window.innerHeight * 640) / 480;
+            this.scale.maxWidth = (window.innerHeight * 2640) / 1440;
             this.scale.maxHeight = window.innerHeight;
             this.scale.setScreenSize(true);
             Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
