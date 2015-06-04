@@ -5,8 +5,7 @@ ArgExp.PreloaderState = (function() {
         if (!(this instanceof PreloaderState)) {
             return new PreloaderState(game);
         }
-        this.background = null;
-        this.preloadBarBack = null;
+        this.progressBarWidth = 1110;
         this.progressBarLeft = null;
         this.progressBarMiddle = null;
         this.progressBarRight = null;
@@ -28,21 +27,20 @@ ArgExp.PreloaderState = (function() {
 
         create: function () {
             var progressBarPosition = {
-                x: (this.game.width/2)-(this.game.cache.getImage('progressBarBackground').width/2),
-                y: (this.game.height/2)+350
+                x: (this.game.width/2)-554,
+                y: (this.game.height/2)+302
             };
             // Loaded in Boot state
             this.preloadBackground = this.add.sprite(0, 0, 'preloadBackground');
-            this.preloadBarBack = this.add.sprite(progressBarPosition.x, progressBarPosition.y, 'progressBarBackground');
-            this.progressBarLeft = this.add.sprite(progressBarPosition.x+12, progressBarPosition.y+12, 'progressBarLeft');
-            this.progressBarMiddle = this.add.sprite(progressBarPosition.x+50, progressBarPosition.y+12, 'progressBarMiddle');
-            this.progressBarRight = this.add.sprite(progressBarPosition.x+50, progressBarPosition.y+12, 'progressBarRight');
+            this.progressBarLeft = this.add.sprite(progressBarPosition.x, progressBarPosition.y, 'progressBarLeft');
+            this.progressBarMiddle = this.add.sprite(progressBarPosition.x+30, progressBarPosition.y, 'progressBarMiddle');
+            this.progressBarRight = this.add.sprite(progressBarPosition.x+30, progressBarPosition.y, 'progressBarRight');
             // Load assets
-            this.load.image('trees', 'assets/misc/trees-h.png');
-            this.load.image('background', 'assets/misc/clouds-h.png');
-            this.load.image('platform', 'assets/misc/platform.png');
-            this.load.image('cloud-platform', 'assets/misc/cloud-platform.png');
-            this.load.spritesheet('dude', 'assets/misc/dude.png', 32, 48);
+            this.load.image('backgroundClouds', 'assets/backgrounds/background-clouds.png');
+            this.load.image('mountains', 'assets/backgrounds/bocet-mountains.png');
+            this.load.image('platform', 'assets/sprites/platform.png');
+            this.load.image('cloud-platform', 'assets/sprites/cloud-platform.png');
+            this.load.spritesheet('dude', 'assets/spritesheets/dude.png', 96, 144);
 
             this.load.onFileComplete.add(this.fileComplete, this);
             this.load.start();
@@ -57,8 +55,8 @@ ArgExp.PreloaderState = (function() {
 
         update: function () {
             //Make sure all our mp3s have decoded before starting the game
-            this.progressBarMiddle.scale.x = (this.game.cache.getImage('progressBarBackground').width - 104) * this.preloadProgress;
-            this.progressBarRight.position.x = this.progressBarMiddle.position.x + (this.game.cache.getImage('progressBarBackground').width - 104) * this.preloadProgress;
+            this.progressBarMiddle.scale.x = this.progressBarWidth * this.preloadProgress;
+            this.progressBarRight.position.x = this.progressBarMiddle.position.x + (this.progressBarWidth * this.preloadProgress);
             if (this.ready){
                 // var allDecoded = this.cache.isSoundDecoded('brickDeath') &&
                 //     this.cache.isSoundDecoded('countdownBlip') &&

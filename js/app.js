@@ -2,7 +2,7 @@
 
 window.onload = function () {
     //  Create Phaser game
-    var game = new Phaser.Game(2640, 1440, Phaser.AUTO, 'game');
+    var game = new Phaser.Game(1920, 1080, Phaser.AUTO, 'game');
     //Add game states
     game.state.add('Boot', ArgExp.BootState);
     game.state.add('Preloader', ArgExp.PreloaderState);

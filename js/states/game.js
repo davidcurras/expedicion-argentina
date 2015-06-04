@@ -28,7 +28,7 @@ ArgExp.GameState = (function() {
 
         this.debug = false;
         this.bg = null;
-        this.trees = null;
+        this.mountains = null;
         this.player = null;
         this.stationary = null;
         this.clouds = null;
@@ -45,47 +45,47 @@ ArgExp.GameState = (function() {
 
         init: function () {
             this.game.renderer.renderSession.roundPixels = true;
-            this.world.resize(640*3, 480);
+            this.world.resize(1920*3, 1080);
             this.physics.startSystem(Phaser.Physics.ARCADE);
             this.physics.arcade.gravity.y = 600;
         },
 
         create: function () {
-            this.background = this.add.tileSprite(0, 0, 640, 480, 'background');
+            this.background = this.add.tileSprite(0, 0, 1920, 1080, 'backgroundClouds');
             this.background.fixedToCamera = true;
-            this.trees = this.add.tileSprite(0, 364, 640, 116, 'trees');
-            this.trees.fixedToCamera = true;
+            this.mountains = this.add.tileSprite(0, 0, 1920, 1080, 'mountains');
+            this.mountains.fixedToCamera = true;
             //  Platforms that don't move
             this.stationary = this.add.physicsGroup();
-            this.stationary.create(0, 96, 'platform');
-            this.stationary.create(632, 220, 'platform');
-            this.stationary.create(1100, 300, 'platform');
+            this.stationary.create(0, 288, 'platform');
+            this.stationary.create(1896, 660, 'platform');
+            this.stationary.create(3300, 900, 'platform');
             this.stationary.setAll('body.allowGravity', false);
             this.stationary.setAll('body.immovable', true);
             //  Platforms that move
             this.clouds = this.add.physicsGroup();
-            var cloud1 = new Cloud(this.game, 300, 450, 'cloud-platform', this.clouds);
+            var cloud1 = new Cloud(this.game, 900, 900, 'cloud-platform', this.clouds);
             cloud1.addMotionPath([
-                { x: "+200", xSpeed: 2000, xEase: "Linear", y: "-200", ySpeed: 2000, yEase: "Sine.easeIn" },
-                { x: "-200", xSpeed: 2000, xEase: "Linear", y: "-200", ySpeed: 2000, yEase: "Sine.easeOut" },
-                { x: "-200", xSpeed: 2000, xEase: "Linear", y: "+200", ySpeed: 2000, yEase: "Sine.easeIn" },
-                { x: "+200", xSpeed: 2000, xEase: "Linear", y: "+200", ySpeed: 2000, yEase: "Sine.easeOut" }
+                { x: "+600", xSpeed: 2000, xEase: "Linear", y: "-400", ySpeed: 2000, yEase: "Sine.easeIn" },
+                { x: "-600", xSpeed: 2000, xEase: "Linear", y: "-400", ySpeed: 2000, yEase: "Sine.easeOut" },
+                { x: "-600", xSpeed: 2000, xEase: "Linear", y: "+400", ySpeed: 2000, yEase: "Sine.easeIn" },
+                { x: "+600", xSpeed: 2000, xEase: "Linear", y: "+400", ySpeed: 2000, yEase: "Sine.easeOut" }
             ]);
-            var cloud2 = new Cloud(this.game, 800, 96, 'cloud-platform', this.clouds);
+            var cloud2 = new Cloud(this.game, 2400, 192, 'cloud-platform', this.clouds);
             cloud2.addMotionPath([
-                { x: "+0", xSpeed: 2000, xEase: "Linear", y: "+300", ySpeed: 2000, yEase: "Sine.easeIn" },
-                { x: "-0", xSpeed: 2000, xEase: "Linear", y: "-300", ySpeed: 2000, yEase: "Sine.easeOut" }
+                { x: "+0", xSpeed: 2000, xEase: "Linear", y: "+600", ySpeed: 2000, yEase: "Sine.easeIn" },
+                { x: "-0", xSpeed: 2000, xEase: "Linear", y: "-600", ySpeed: 2000, yEase: "Sine.easeOut" }
             ]);
-            var cloud3 = new Cloud(this.game, 1300, 290, 'cloud-platform', this.clouds);
+            var cloud3 = new Cloud(this.game, 3900, 580, 'cloud-platform', this.clouds);
             cloud3.addMotionPath([
-                { x: "+500", xSpeed: 4000, xEase: "Expo.easeIn", y: "-200", ySpeed: 3000, yEase: "Linear" },
-                { x: "-500", xSpeed: 4000, xEase: "Expo.easeOut", y: "+200", ySpeed: 3000, yEase: "Linear" }
+                { x: "+1500", xSpeed: 4000, xEase: "Expo.easeIn", y: "-400", ySpeed: 3000, yEase: "Linear" },
+                { x: "-1500", xSpeed: 4000, xEase: "Expo.easeOut", y: "+400", ySpeed: 3000, yEase: "Linear" }
             ]);
             //  The Player
-            this.player = this.add.sprite(32, 0, 'dude');
+            this.player = this.add.sprite(96, 0, 'dude');
             this.physics.arcade.enable(this.player);
             this.player.body.collideWorldBounds = true;
-            this.player.body.setSize(20, 32, 5, 16);
+            this.player.body.setSize(60, 96, 15, 36);
             this.player.animations.add('left', [0, 1, 2, 3], 10, true);
             this.player.animations.add('turn', [4], 20, true);
             this.player.animations.add('right', [5, 6, 7, 8], 10, true);
@@ -123,7 +123,7 @@ ArgExp.GameState = (function() {
             }
             if (this.locked || this.wasLocked) {
                 this.player.x += this.lockedTo.deltaX;
-                this.player.y = this.lockedTo.y - 48;
+                this.player.y = this.lockedTo.y - 96;
                 if (this.player.body.velocity.x !== 0) {
                     this.player.body.velocity.y = 0;
                 }
@@ -132,9 +132,9 @@ ArgExp.GameState = (function() {
                 this.willJump = false;
                 if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
                     //  If the platform is moving up we add its velocity to the players jump
-                    this.player.body.velocity.y = -300 + (this.lockedTo.deltaY * 10);
+                    this.player.body.velocity.y = -600 + (this.lockedTo.deltaY * 20);
                 } else {
-                    this.player.body.velocity.y = -300;
+                    this.player.body.velocity.y = -600;
                 }
                 this.jumpTimer = this.time.time + 750;
             }
@@ -146,20 +146,20 @@ ArgExp.GameState = (function() {
         },
         update: function () {
             this.background.tilePosition.x = -(this.camera.x * 0.7);
-            this.trees.tilePosition.x = -(this.camera.x * 0.9);
+            this.mountains.tilePosition.x = -(this.camera.x * 0.9);
             this.physics.arcade.collide(this.player, this.stationary);
             this.physics.arcade.collide(this.player, this.clouds, this.customSep, null, this);
             //  Do this AFTER the collide check, or we won't have blocked/touching set
             var standing = this.player.body.blocked.down || this.player.body.touching.down || this.locked;
             this.player.body.velocity.x = 0;
             if (this.cursors.left.isDown) {
-                this.player.body.velocity.x = -150;
+                this.player.body.velocity.x = -450;
                 if (this.facing !== 'left') {
                     this.player.play('left');
                     this.facing = 'left';
                 }
             } else if (this.cursors.right.isDown) {
-                this.player.body.velocity.x = 150;
+                this.player.body.velocity.x = 450;
                 if (this.facing !== 'right') {
                     this.player.play('right');
                     this.facing = 'right';
