@@ -5,8 +5,9 @@ ArgExp.MenuState = (function() {
         if (!(this instanceof MenuState)) {
             return new MenuState(game);
         }
-        this.gameMessageText = null;
-        this.gameMessageSecondLineText = null;
+        this.cloudsBackground = null;
+        this.playText = null;
+        this.creditsText = null;
     }
 
     MenuState.prototype = {
@@ -14,17 +15,19 @@ ArgExp.MenuState = (function() {
         create: function () {
             var textPosition = {
                 x: (this.game.world.centerX),
-                y: (this.game.world.centerY)+400
+                y: (this.game.world.centerY)+300
             };
-            this.preloadBackground = this.add.sprite(0, 0, 'preloadBackground');
-            this.gameText = this.add.text(textPosition.x, textPosition.y, 'Click para empezar', { font: "72px Arial", fill: "#000000", align: "center" });
-            this.gameText.anchor.setTo(0.5, 0.5);
+            this.cloudsBackground = this.add.sprite(0, 0, 'cloudsBackground');
+            this.playText = this.add.text(textPosition.x, textPosition.y, 'JUGAR', { font: "120px Cookie", fill: "#000000", align: "center" });
+            this.creditsText = this.add.text(textPosition.x, textPosition.y+150, 'CRÉDITOS', { font: "120px Cookie", fill: "#000000", align: "center" });
+            this.playText.anchor.setTo(0.5, 0.5);
+            this.creditsText.anchor.setTo(0.5, 0.5);
             this.game.input.onDown.add(this.click, this);
         },
 
         click: function(x, y, timedown) {
             //this.music.stop();
-            this.state.start('Game');
+            this.state.start('SelectArea');
         }
     };
 

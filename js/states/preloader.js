@@ -36,8 +36,10 @@ ArgExp.PreloaderState = (function() {
             this.progressBarMiddle = this.add.sprite(progressBarPosition.x+30, progressBarPosition.y, 'progressBarMiddle');
             this.progressBarRight = this.add.sprite(progressBarPosition.x+30, progressBarPosition.y, 'progressBarRight');
             // Load assets
-            this.load.image('backgroundClouds', 'assets/backgrounds/background-clouds.png');
-            this.load.image('mountains', 'assets/backgrounds/bocet-mountains.png');
+            this.load.image('selectAreaBackground', 'assets/backgrounds/select-area.png');
+            this.load.image('cloudsBackground', 'assets/backgrounds/clouds.png');
+            this.load.image('mountainsBackground', 'assets/backgrounds/mountains.png');
+            this.load.image('heroeSprite', 'assets/sprites/heroe.png');
             this.load.image('platform', 'assets/sprites/platform.png');
             this.load.image('cloud-platform', 'assets/sprites/cloud-platform.png');
             this.load.spritesheet('dude', 'assets/spritesheets/dude.png', 96, 144);

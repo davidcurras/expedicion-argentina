@@ -51,9 +51,9 @@ ArgExp.GameState = (function() {
         },
 
         create: function () {
-            this.background = this.add.tileSprite(0, 0, 1920, 1080, 'backgroundClouds');
+            this.background = this.add.tileSprite(0, 0, 1920, 1080, 'cloudsBackground');
             this.background.fixedToCamera = true;
-            this.mountains = this.add.tileSprite(0, 0, 1920, 1080, 'mountains');
+            this.mountains = this.add.tileSprite(0, 0, 1920, 1080, 'mountainsBackground');
             this.mountains.fixedToCamera = true;
             //  Platforms that don't move
             this.stationary = this.add.physicsGroup();
