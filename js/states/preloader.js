@@ -41,7 +41,8 @@ ArgExp.PreloaderState = (function() {
             this.load.image('selectAreaBackground', 'assets/backgrounds/select-area.png');
             this.load.image('cloudsBackground', 'assets/backgrounds/clouds.png');
             this.load.image('mountainsBackground', 'assets/backgrounds/mountains.png');
-            this.load.image('sunMenu', 'assets/sprites/sun-menu.png');
+            this.load.image('sunMenuSprite', 'assets/sprites/sun-menu.png');
+            this.load.image('heroeSmSprite', 'assets/sprites/heroe-sm.png');
             this.load.image('heroeSprite', 'assets/sprites/heroe.png');
             this.load.image('platform', 'assets/sprites/platform.png');
             this.load.image('cloud-platform', 'assets/sprites/cloud-platform.png');

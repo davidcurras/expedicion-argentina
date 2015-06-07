@@ -17,6 +17,7 @@ window.onload = function () {
     game.state.add('Boot', ArgExp.BootState);
     game.state.add('Preloader', ArgExp.PreloaderState);
     game.state.add('Menu', ArgExp.MenuState);
+    game.state.add('Credits', ArgExp.CreditsState);
     game.state.add('SelectArea', ArgExp.SelectAreaState);
     game.state.add('Game', ArgExp.GameState);
     game.state.add('Congratulations', ArgExp.Congratulations);

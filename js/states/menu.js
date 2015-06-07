@@ -6,7 +6,7 @@ ArgExp.MenuState = (function() {
             return new MenuState(game);
         }
         this.menuBackground = null;
-        this.sunMenu = null;
+        this.sunMenuSprite = null;
         this.menuFrontBackground = null;
         this.playText = null;
         this.creditsText = null;
@@ -24,8 +24,8 @@ ArgExp.MenuState = (function() {
                 y: (this.game.world.centerY)+58
             };
             this.menuBackground = this.add.sprite(0, 0, 'menuBackground');
-            this.sunMenu = this.add.sprite(sunPosition.x, sunPosition.y, 'sunMenu');
-            this.sunMenu.anchor.setTo(0.5, 0.5);
+            this.sunMenuSprite = this.add.sprite(sunPosition.x, sunPosition.y, 'sunMenuSprite');
+            this.sunMenuSprite.anchor.setTo(0.5, 0.5);
             this.menuFrontBackground = this.add.sprite(0, 0, 'menuFrontBackground');
             this.playText = this.add.text(textPosition.x, textPosition.y, 'JUGAR', { font: "90px 'Yanone Kaffeesatz'", fill: "#000000", align: "center" });
             this.playText.anchor.setTo(0.5, 0.5);
@@ -38,16 +38,14 @@ ArgExp.MenuState = (function() {
         },
 
         update: function () {
-            this.sunMenu.angle += 0.3;
+            this.sunMenuSprite.angle += 0.3;
         },
 
         play: function() {
-            //this.music.stop();
             this.state.start('SelectArea');
         },
 
         credits: function() {
-            //this.music.stop();
             this.state.start('Credits');
         }
     };
