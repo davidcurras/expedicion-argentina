@@ -5,7 +5,7 @@ ArgExp.PreloaderState = (function() {
         if (!(this instanceof PreloaderState)) {
             return new PreloaderState(game);
         }
-        this.progressBarWidth = 1110;
+        this.progressBarWidth = 1105;
         this.progressBarLeft = null;
         this.progressBarMiddle = null;
         this.progressBarRight = null;
@@ -27,7 +27,7 @@ ArgExp.PreloaderState = (function() {
 
         create: function () {
             var progressBarPosition = {
-                x: (this.game.width/2)-554,
+                x: (this.game.width/2)-582,
                 y: (this.game.height/2)+302
             };
             // Loaded in Boot state
@@ -36,13 +36,17 @@ ArgExp.PreloaderState = (function() {
             this.progressBarMiddle = this.add.sprite(progressBarPosition.x+30, progressBarPosition.y, 'progressBarMiddle');
             this.progressBarRight = this.add.sprite(progressBarPosition.x+30, progressBarPosition.y, 'progressBarRight');
             // Load assets
+            this.load.image('menuBackground', 'assets/backgrounds/menu-back.png');
+            this.load.image('menuFrontBackground', 'assets/backgrounds/menu-front.png');
             this.load.image('selectAreaBackground', 'assets/backgrounds/select-area.png');
             this.load.image('cloudsBackground', 'assets/backgrounds/clouds.png');
             this.load.image('mountainsBackground', 'assets/backgrounds/mountains.png');
+            this.load.image('sunMenu', 'assets/sprites/sun-menu.png');
             this.load.image('heroeSprite', 'assets/sprites/heroe.png');
             this.load.image('platform', 'assets/sprites/platform.png');
             this.load.image('cloud-platform', 'assets/sprites/cloud-platform.png');
             this.load.spritesheet('dude', 'assets/spritesheets/dude.png', 96, 144);
+            this.load.script('webfont', 'js/utils/google-webfont.js');
 
             this.load.onFileComplete.add(this.fileComplete, this);
             this.load.start();
