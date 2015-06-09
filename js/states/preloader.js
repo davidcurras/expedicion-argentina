@@ -44,11 +44,12 @@ ArgExp.PreloaderState = (function() {
             this.load.image('sunMenuSprite', 'assets/sprites/sun-menu.png');
             this.load.image('heroeSmSprite', 'assets/sprites/heroe-sm.png');
             this.load.image('heroeSprite', 'assets/sprites/heroe.png');
-            this.load.image('platform', 'assets/sprites/platform.png');
-            this.load.image('cloud-platform', 'assets/sprites/cloud-platform.png');
-            this.load.spritesheet('dude', 'assets/spritesheets/dude.png', 96, 144);
+            this.load.image('ground_1x1', 'assets/tilemaps/ground_1x1.png');
+            this.load.image('walls_1x2', 'assets/tilemaps/walls_1x2.png');
+            this.load.image('tiles2', 'assets/tilemaps/tiles2.png');
+            this.load.tilemap('map', 'assets/tilemaps/map.json', null, Phaser.Tilemap.TILED_JSON);
+            this.load.spritesheet('dude', 'assets/spritesheets/dude.png', 64, 96);
             this.load.script('webfont', 'js/utils/google-webfont.js');
-
             this.load.onFileComplete.add(this.fileComplete, this);
             this.load.start();
         },

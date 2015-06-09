@@ -30,144 +30,68 @@ ArgExp.GameState = (function() {
         this.bg = null;
         this.mountains = null;
         this.player = null;
-        this.stationary = null;
-        this.clouds = null;
         this.facing = 'left';
         this.jumpTimer = 0;
-        this.cursors;
-        this.locked = false;
-        this.lockedTo = null;
-        this.wasLocked = false;
-        this.willJump = false;
+        this.cursors = null;
+        this.jumpButton = null;
+        this.map = null;
+        this.layer = null;
     }
 
     GameState.prototype = {
 
         init: function () {
-            this.game.renderer.renderSession.roundPixels = true;
-            this.world.resize(1920*3, 1080);
-            this.physics.startSystem(Phaser.Physics.ARCADE);
-            this.physics.arcade.gravity.y = 600;
+            this.physics.startSystem(Phaser.Physics.P2JS);
         },
 
         create: function () {
-            this.background = this.add.tileSprite(0, 0, 1920, 1080, 'cloudsBackground');
-            this.background.fixedToCamera = true;
-            this.mountains = this.add.tileSprite(0, 0, 1920, 1080, 'mountainsBackground');
-            this.mountains.fixedToCamera = true;
-            //  Platforms that don't move
-            this.stationary = this.add.physicsGroup();
-            this.stationary.create(0, 288, 'platform');
-            this.stationary.create(1896, 660, 'platform');
-            this.stationary.create(3300, 900, 'platform');
-            this.stationary.setAll('body.allowGravity', false);
-            this.stationary.setAll('body.immovable', true);
-            //  Platforms that move
-            this.clouds = this.add.physicsGroup();
-            var cloud1 = new Cloud(this.game, 900, 900, 'cloud-platform', this.clouds);
-            cloud1.addMotionPath([
-                { x: "+600", xSpeed: 2000, xEase: "Linear", y: "-400", ySpeed: 2000, yEase: "Sine.easeIn" },
-                { x: "-600", xSpeed: 2000, xEase: "Linear", y: "-400", ySpeed: 2000, yEase: "Sine.easeOut" },
-                { x: "-600", xSpeed: 2000, xEase: "Linear", y: "+400", ySpeed: 2000, yEase: "Sine.easeIn" },
-                { x: "+600", xSpeed: 2000, xEase: "Linear", y: "+400", ySpeed: 2000, yEase: "Sine.easeOut" }
-            ]);
-            var cloud2 = new Cloud(this.game, 2400, 192, 'cloud-platform', this.clouds);
-            cloud2.addMotionPath([
-                { x: "+0", xSpeed: 2000, xEase: "Linear", y: "+600", ySpeed: 2000, yEase: "Sine.easeIn" },
-                { x: "-0", xSpeed: 2000, xEase: "Linear", y: "-600", ySpeed: 2000, yEase: "Sine.easeOut" }
-            ]);
-            var cloud3 = new Cloud(this.game, 3900, 580, 'cloud-platform', this.clouds);
-            cloud3.addMotionPath([
-                { x: "+1500", xSpeed: 4000, xEase: "Expo.easeIn", y: "-400", ySpeed: 3000, yEase: "Linear" },
-                { x: "-1500", xSpeed: 4000, xEase: "Expo.easeOut", y: "+400", ySpeed: 3000, yEase: "Linear" }
-            ]);
-            //  The Player
-            this.player = this.add.sprite(96, 0, 'dude');
-            this.physics.arcade.enable(this.player);
-            this.player.body.collideWorldBounds = true;
-            this.player.body.setSize(60, 96, 15, 36);
+            this.physics.startSystem(Phaser.Physics.P2JS);
+            this.stage.backgroundColor = '#2d2d2d';
+            this.map = this.add.tilemap('map');
+            this.map.addTilesetImage('ground_1x1');
+            this.map.addTilesetImage('walls_1x2');
+            this.map.addTilesetImage('tiles2');
+            this.layer = this.map.createLayer('Tile Layer 1');
+            this.layer.resizeWorld();
+            //  Set the tiles for collision.
+            //  Do this BEFORE generating the p2 bodies below.
+            this.map.setCollisionBetween(1, 12);
+            //  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
+            //  This call returns an array of body objects which you can perform addition actions on if
+            //  required. There is also a parameter to control optimising the map build.
+            this.physics.p2.convertTilemap(this.map, this.layer);
+            this.physics.p2.restitution = 0.5;
+            this.physics.p2.gravity.y = 600;
+            this.player = this.add.sprite(200, 400, 'dude');
             this.player.animations.add('left', [0, 1, 2, 3], 10, true);
             this.player.animations.add('turn', [4], 20, true);
             this.player.animations.add('right', [5, 6, 7, 8], 10, true);
+            this.physics.p2.enable(this.player);
+            this.player.body.fixedRotation = true;
+            // player.body.setMaterial(characterMaterial);
             this.camera.follow(this.player);
             this.cursors = this.input.keyboard.createCursorKeys();
-            this.clouds.callAll('start');
+            this.jumpButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         },
 
-        customSep: function (player, platform) {
-            if (!this.locked && player.body.velocity.y > 0) {
-                this.locked = true;
-                this.lockedTo = platform;
-                platform.playerLocked = true;
-                player.body.velocity.y = 0;
-            }
-        },
-
-        checkLock: function () {
-            this.player.body.velocity.y = 0;
-            //  If the player has walked off either side of the platform then they're no longer locked to it
-            if (this.player.body.right < this.lockedTo.body.x || this.player.body.x > this.lockedTo.body.right) {
-                this.cancelLock();
-            }
-        },
-
-        cancelLock: function () {
-            this.wasLocked = true;
-            this.locked = false;
-        },
-
-        preRender: function () {
-            if (this.game.paused) {
-                //  Because preRender still runs even if your game pauses!
-                return;
-            }
-            if (this.locked || this.wasLocked) {
-                this.player.x += this.lockedTo.deltaX;
-                this.player.y = this.lockedTo.y - 96;
-                if (this.player.body.velocity.x !== 0) {
-                    this.player.body.velocity.y = 0;
-                }
-            }
-            if (this.willJump) {
-                this.willJump = false;
-                if (this.lockedTo && this.lockedTo.deltaY < 0 && this.wasLocked) {
-                    //  If the platform is moving up we add its velocity to the players jump
-                    this.player.body.velocity.y = -600 + (this.lockedTo.deltaY * 20);
-                } else {
-                    this.player.body.velocity.y = -600;
-                }
-                this.jumpTimer = this.time.time + 750;
-            }
-            if (this.wasLocked) {
-                this.wasLocked = false;
-                this.lockedTo.playerLocked = false;
-                this.lockedTo = null;
-            }
-        },
         update: function () {
-            this.background.tilePosition.x = -(this.camera.x * 0.7);
-            this.mountains.tilePosition.x = -(this.camera.x * 0.9);
-            this.physics.arcade.collide(this.player, this.stationary);
-            this.physics.arcade.collide(this.player, this.clouds, this.customSep, null, this);
-            //  Do this AFTER the collide check, or we won't have blocked/touching set
-            var standing = this.player.body.blocked.down || this.player.body.touching.down || this.locked;
-            this.player.body.velocity.x = 0;
             if (this.cursors.left.isDown) {
-                this.player.body.velocity.x = -450;
-                if (this.facing !== 'left') {
-                    this.player.play('left');
+                this.player.body.moveLeft(400);
+                if (this.facing != 'left') {
+                    this.player.animations.play('left');
                     this.facing = 'left';
                 }
             } else if (this.cursors.right.isDown) {
-                this.player.body.velocity.x = 450;
-                if (this.facing !== 'right') {
-                    this.player.play('right');
+                this.player.body.moveRight(400);
+                if (this.facing != 'right') {
+                    this.player.animations.play('right');
                     this.facing = 'right';
                 }
             } else {
-                if (this.facing !== 'idle') {
+                this.player.body.velocity.x = 0;
+                if (this.facing != 'idle') {
                     this.player.animations.stop();
-                    if (this.facing === 'left') {
+                    if (this.facing == 'left') {
                         this.player.frame = 0;
                     } else {
                         this.player.frame = 5;
@@ -175,16 +99,29 @@ ArgExp.GameState = (function() {
                     this.facing = 'idle';
                 }
             }
-            if (standing && this.cursors.up.isDown && this.time.time > this.jumpTimer) {
-                if (this.locked) {
-                    this.cancelLock();
-                }
-                this.willJump = true;
+            if (this.jumpButton.isDown && this.game.time.now > this.jumpTimer && this.checkIfCanJump()) {
+                this.player.body.moveUp(600);
+                this.jumpTimer = this.game.time.now + 750;
             }
-            if (this.locked) {
-                this.checkLock();
-            }
+        },
 
+        render: function () { },
+
+        checkIfCanJump: function() {
+            var i, c, d, yAxis = p2.vec2.fromValues(0, 1), result = false;
+            for (i = 0; i < this.physics.p2.world.narrowphase.contactEquations.length; i++) {
+                c = this.physics.p2.world.narrowphase.contactEquations[i];
+                if (c.bodyA === this.player.body.data || c.bodyB === this.player.body.data) {
+                    d = p2.vec2.dot(c.normalA, yAxis); // Normal dot Y-axis
+                    if (c.bodyA === this.player.body.data) {
+                        d *= -1;
+                    }
+                    if (d > 0.5) {
+                        result = true;
+                    }
+                }
+            }
+            return result;
         }
     };
 
