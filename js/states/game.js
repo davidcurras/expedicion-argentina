@@ -47,11 +47,9 @@ ArgExp.GameState = (function() {
         create: function () {
             this.physics.startSystem(Phaser.Physics.P2JS);
             this.stage.backgroundColor = '#2d2d2d';
-            this.map = this.add.tilemap('map');
-            this.map.addTilesetImage('ground_1x1');
-            this.map.addTilesetImage('walls_1x2');
-            this.map.addTilesetImage('tiles2');
-            this.layer = this.map.createLayer('Tile Layer 1');
+            this.map = this.add.tilemap('pampa');
+            this.map.addTilesetImage('pampa');
+            this.layer = this.map.createLayer('ground');
             this.layer.resizeWorld();
             //  Set the tiles for collision.
             //  Do this BEFORE generating the p2 bodies below.
@@ -62,10 +60,10 @@ ArgExp.GameState = (function() {
             this.physics.p2.convertTilemap(this.map, this.layer);
             this.physics.p2.restitution = 0.5;
             this.physics.p2.gravity.y = 600;
-            this.player = this.add.sprite(200, 400, 'dude');
+            this.player = this.add.sprite(145, 174, 'hero');
             this.player.animations.add('left', [0, 1, 2, 3], 10, true);
             this.player.animations.add('turn', [4], 20, true);
-            this.player.animations.add('right', [5, 6, 7, 8], 10, true);
+            this.player.animations.add('right', [4, 5, 6, 7], 10, true);
             this.physics.p2.enable(this.player);
             this.player.body.fixedRotation = true;
             // player.body.setMaterial(characterMaterial);

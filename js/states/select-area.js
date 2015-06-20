@@ -35,7 +35,7 @@ ArgExp.SelectAreaState = (function() {
                 y: (this.game.world.centerY)+200
             };
             this.selectAreaBackground = this.add.sprite(0, 0, 'selectAreaBackground');
-            this.heroeSprite = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'heroeSmSprite');
+            this.heroeSprite = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'heroeSprite');
             this.heroeSprite.anchor.setTo(0.5, 0.5);
             this.heroeSprite.x = this.game.world.width*2;//Putting sprite out of screen
             this.playText = this.add.text(textPosition.x, textPosition.y, '', { font: "90px 'Yanone Kaffeesatz'", fill: "#000000", align: "center" });

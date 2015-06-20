@@ -31,6 +31,11 @@ ArgExp.BootState = (function() {
             Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
             // Set arcade physics
             this.physics.startSystem(Phaser.Physics.ARCADE);
+            // Preload fonts by creating hidden texts
+            this.add.text(-999, -999, 'LOADING YANONE LIGHT', { font: "300 10px 'Yanone Kaffeesatz'", fill: "#000000", align: "center" });
+            this.add.text(-999, -999, 'LOADING YANONE REGULAR', { font: "400 10px 'Yanone Kaffeesatz'", fill: "#000000", align: "center" });
+            this.add.text(-999, -999, 'LOADING YANONE BOLD', { font: "700 10px 'Yanone Kaffeesatz'", fill: "#000000", align: "center" });
+            this.add.text(-999, -999, 'LOADING COOKIE', { font: "10px 'Cookie'", fill: "#000000", align: "center" });
             // Load next state
             this.state.start('Preloader');
         }
