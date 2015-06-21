@@ -51,7 +51,8 @@ ArgExp.PreloaderState = (function() {
             this.load.image('grapesSprite', 'assets/sprites/grapes.png');
             this.load.image('bushSprite', 'assets/sprites/bush.png');
             this.load.image('treeSprite', 'assets/sprites/tree.png');
-            this.load.tilemap('pampa', 'assets/tilemaps/pampa.json', null, Phaser.Tilemap.TILED_JSON);
+            this.load.tilemap('pampaMap', 'assets/tilemaps/pampa.json', null, Phaser.Tilemap.TILED_JSON);
+            this.load.image('pampa', 'assets/tilemaps/pampa.png');
             this.load.spritesheet('hero', 'assets/spritesheets/hero.png', 145, 174);
             this.load.onFileComplete.add(this.fileComplete, this);
             this.load.start();

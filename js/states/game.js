@@ -27,8 +27,9 @@ ArgExp.GameState = (function() {
         */
 
         this.debug = false;
-        this.bg = null;
-        this.mountains = null;
+        this.background = null;
+        this.mountainsFar = null;
+        this.mountainsNear = null;
         this.player = null;
         this.facing = 'left';
         this.jumpTimer = 0;
@@ -42,12 +43,18 @@ ArgExp.GameState = (function() {
 
         init: function () {
             this.physics.startSystem(Phaser.Physics.P2JS);
+            this.world.resize(4500, 1080);
         },
 
         create: function () {
-            this.physics.startSystem(Phaser.Physics.P2JS);
+            this.background = this.add.tileSprite(0, 0, 1920, 800, 'cloudsOrangeBackground');
+            this.background.fixedToCamera = true;
+            this.mountainsFar = this.add.tileSprite(0, 616, 1920, 463, 'mountainsFarBackground');
+            this.mountainsFar.fixedToCamera = true;
+            this.mountainsNear = this.add.tileSprite(0, 616, 1920, 463, 'mountainsNearBackground');
+            this.mountainsNear.fixedToCamera = true;
             this.stage.backgroundColor = '#2d2d2d';
-            this.map = this.add.tilemap('pampa');
+            this.map = this.add.tilemap('pampaMap');
             this.map.addTilesetImage('pampa');
             this.layer = this.map.createLayer('ground');
             this.layer.resizeWorld();
@@ -73,6 +80,9 @@ ArgExp.GameState = (function() {
         },
 
         update: function () {
+            this.background.tilePosition.x = -(this.camera.x * 0.5);
+            this.mountainsFar.tilePosition.x = -(this.camera.x * 0.7);
+            this.mountainsNear.tilePosition.x = -(this.camera.x * 0.9);
             if (this.cursors.left.isDown) {
                 this.player.body.moveLeft(400);
                 if (this.facing != 'left') {
