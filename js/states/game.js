@@ -36,7 +36,7 @@ ArgExp.GameState = (function() {
         this.cursors = null;
         this.jumpButton = null;
         this.map = null;
-        this.layer = null;
+        this.groundLayer = null;
     }
 
     GameState.prototype = {
@@ -56,24 +56,32 @@ ArgExp.GameState = (function() {
             this.stage.backgroundColor = '#2d2d2d';
             this.map = this.add.tilemap('pampaMap');
             this.map.addTilesetImage('pampa');
-            this.layer = this.map.createLayer('ground');
-            this.layer.resizeWorld();
-            //  Set the tiles for collision.
-            //  Do this BEFORE generating the p2 bodies below.
-            this.map.setCollisionBetween(1, 12);
-            //  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
-            //  This call returns an array of body objects which you can perform addition actions on if
-            //  required. There is also a parameter to control optimising the map build.
-            this.physics.p2.convertTilemap(this.map, this.layer);
-            this.physics.p2.restitution = 0.5;
+            this.groundLayer = this.map.createLayer('ground');
+            this.groundLayer.resizeWorld();
+            this.physics.p2.setImpactEvents(true);
+            this.physics.p2.restitution = 0.1;
             this.physics.p2.gravity.y = 600;
+            var playerCG = this.physics.p2.createCollisionGroup();
+            var wallsCG =  this.physics.p2.createCollisionGroup();
+            var fruitsCG =  this.physics.p2.createCollisionGroup();
+            var walls = this.physics.p2.convertCollisionObjects(this.map, 'groundObj', true);   
+            for(var wall in walls) {
+                walls[wall].setCollisionGroup(wallsCG);
+                walls[wall].collides(playerCG);
+            }
+            console.log(walls);
+            this.map.createFromObjects('fruitsObj', 25, 'grapesSprite');
+            this.map.createFromObjects('fruitsObj', 26, 'orangeSprite');
+            this.map.createFromObjects('fruitsObj', 27, 'strawberrySprite');
+            this.map.createFromObjects('miscObj', 42, 'treeSprite');
+            this.map.createFromObjects('miscObj', 43, 'bushSprite');
             this.player = this.add.sprite(145, 174, 'hero');
-            this.player.animations.add('left', [0, 1, 2, 3], 10, true);
-            this.player.animations.add('turn', [4], 20, true);
-            this.player.animations.add('right', [4, 5, 6, 7], 10, true);
+            this.player.animations.add('left', [0, 1, 2, 3, 4, 5], 15, true);
+            this.player.animations.add('right', [6, 7, 8, 9, 10, 11], 15, true);
             this.physics.p2.enable(this.player);
+            //this.player.body.setCollisionGroup(playerCG);
+            //this.player.body.collides(wallsCG);
             this.player.body.fixedRotation = true;
-            // player.body.setMaterial(characterMaterial);
             this.camera.follow(this.player);
             this.cursors = this.input.keyboard.createCursorKeys();
             this.jumpButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);

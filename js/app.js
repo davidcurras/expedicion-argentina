@@ -9,6 +9,7 @@ window.onload = function () {
     game.state.add('Menu', ArgExp.MenuState);
     game.state.add('Credits', ArgExp.CreditsState);
     game.state.add('SelectArea', ArgExp.SelectAreaState);
+    game.state.add('SelectLevel', ArgExp.SelectLevelState);
     game.state.add('Game', ArgExp.GameState);
     game.state.add('Congratulations', ArgExp.Congratulations);
     game.state.add('GameOver', ArgExp.GameOver);

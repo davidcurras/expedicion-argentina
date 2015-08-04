@@ -19,3 +19,5 @@ _site
 coverage/*
 dist/*
 config.codekit
+
+#chrome.exe --allow-file-access-from-files

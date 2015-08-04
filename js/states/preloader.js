@@ -39,6 +39,7 @@ ArgExp.PreloaderState = (function() {
             this.load.image('menuBackground', 'assets/backgrounds/menu-back.png');
             this.load.image('menuFrontBackground', 'assets/backgrounds/menu-front.png');
             this.load.image('selectAreaBackground', 'assets/backgrounds/select-area.png');
+            this.load.image('selectLevelBackground', 'assets/backgrounds/select-level.png');
             this.load.image('cloudsOrangeBackground', 'assets/backgrounds/clouds-orange.png');
             this.load.image('cloudsBlueBackground', 'assets/backgrounds/clouds-blue.png');
             this.load.image('mountainsFarBackground', 'assets/backgrounds/mountains-far.png');
@@ -53,7 +54,7 @@ ArgExp.PreloaderState = (function() {
             this.load.image('treeSprite', 'assets/sprites/tree.png');
             this.load.tilemap('pampaMap', 'assets/tilemaps/pampa.json', null, Phaser.Tilemap.TILED_JSON);
             this.load.image('pampa', 'assets/tilemaps/pampa.png');
-            this.load.spritesheet('hero', 'assets/spritesheets/hero.png', 145, 174);
+            this.load.spritesheet('hero', 'assets/spritesheets/hero.png', 179, 180);
             this.load.onFileComplete.add(this.fileComplete, this);
             this.load.start();
         },
